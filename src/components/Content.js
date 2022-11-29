@@ -1,12 +1,12 @@
-import './interactables.css';
-import { FormControl, InputLabel, MenuItem, Box, Select, TextField, Button } from '@mui/material';
+import './Content.css';
+import { FormControl, InputLabel, MenuItem, Box, Select, Button } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import ImageGrid from './ImageGrid';
 
-function InputBar() {
+function Content() {
     const [breed, setBreed] = useState('');
     const [data, setData] = useState({});
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState(['']);
     const [subBreed, setSubBreed] = useState('');
     const [number, setNumber] = useState(1);
     const [noSB, setNoSB] = useState(true);
@@ -31,7 +31,7 @@ function InputBar() {
     const handleChangeNumber = (event) => {
         setNumber(event.target.value)
     };
-    const useHandleSearch = () => {
+    const useHandleSearch = async () => {
         if (breed === '') {
             setBreedError(true);
         }
@@ -44,25 +44,13 @@ function InputBar() {
         else {
             setSubBreedError(false);
         }
-        if (!breedError && !subBreedError && subBreed === '') {
-            const response = async () => {
-                fetch(`https://dog.ceo/api/breed/${breed}/images/random/${number}`)
-            }
-            if (!response.ok) {
-                throw response
-            }
-            const data = response.json();
-            setImages(data.message);
+        if (breed !== '' & noSB) {
+            const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random/${number}`)
+            setImages((await response.json()).message)
         }
-        else if (!breedError && !subBreedError) {
-            const response = async () => {
-                fetch(`https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${number}`)
-            }
-            if (!response.ok) {
-                throw response
-            }
-            const data = response.json();
-            setImages(data.message);
+        else if (breed !== '' && subBreed !== '') {
+            const response = await fetch(`https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${number}`)
+            setImages((await response.json()).message)
         }
     };
 
@@ -136,9 +124,11 @@ function InputBar() {
                     Show images
                 </Button>
             </Box>
-            <ImageGrid images={images}/>
+            <Box className='Container'>
+                <ImageGrid images={images}/>
+            </Box>
         </>
     )
 }
 
-export default InputBar;
+export default Content;

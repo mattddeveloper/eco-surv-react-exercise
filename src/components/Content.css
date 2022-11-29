@@ -1,5 +1,6 @@
 .Container {
     padding-inline: 10%;
     padding-top: 25px;
+    flex-direction: row;
 }
 

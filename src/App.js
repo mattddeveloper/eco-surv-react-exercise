@@ -1,12 +1,10 @@
 import './App.css';
-import InputBar from './components/Content';
+import Content from './components/Content';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <InputBar />
-      </header>
+      <Content />
     </div>
   );
 }
